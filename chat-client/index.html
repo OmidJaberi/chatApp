@@ -17,12 +17,13 @@
         </div>
       </div>
       <div class="message-container" id="message-container"></div>
-      <form>
-        <input type="text" placeholder="Write a message...">
+      <form id="send-container">
+        <input type="text" placeholder="Write a message..." id="message-input">
         <button>➤</button>
       </form>
 
     </div>
+    <script defer src="http://localhost:3000/socket.io/socket.io.js"></script>
     <script type="module" src="/main.js"></script>
   </body>
 </html>
