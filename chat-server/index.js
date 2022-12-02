@@ -1,3 +1,4 @@
+const fs = require('fs');
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
@@ -10,8 +11,22 @@ const io = new Server(server);
 app.use(cors());
 app.use(express.json());
 
-const users = [];
+const data = JSON.parse(fs.readFileSync('data.json'));
+const users = data.users;
+const messages = data.messages;
 const online = {};
+
+function updateData() {
+	const data = JSON.stringify({
+        'users': users,
+        'messages': messages
+    }, null, 4);
+    fs.writeFile('data.json', data, (err) => {
+        if (err) {
+            log(err);
+        }
+    });
+}
 
 io.on('connection', socket => {
 	socket.on('add-user', token => {
@@ -20,6 +35,13 @@ io.on('connection', socket => {
 	});
 	socket.on('send-message', data => {
 		console.log(`New Message: ${data.message} from ${data.token} to ${data.to}`);
+		const msg = {
+			'from': data.token,
+			'to': data.to,
+			'content': data.message
+		};
+		messages.push(msg);
+		updateData();
 		if (online[data.to])
 			online[data.to].emit('message-event', {
 				'from': data.token,
@@ -43,6 +65,7 @@ app.post('/users', async (req, res) => {
 		const hashedPassword = await bcrypt.hash(req.body.password, 10);
 		const user = { name: req.body.name, password: hashedPassword };
 		users.push(user);
+		updateData();
 		res.status(201).send();
 	} catch {
 		res.status(500).send();
