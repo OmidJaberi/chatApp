@@ -1,36 +1,30 @@
 const express = require('express');
-const cors = require('cors');
-const app = express();
 const http = require('http');
-const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server);
+const cors = require('cors');
 const bcrypt = require('bcrypt');
+const { Server } = require("socket.io");
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
 
 app.use(cors());
 app.use(express.json());
 
-let usercount = 0;
 const users = [];
 const online = {};
-
-
 
 io.on('connection', socket => {
 	socket.on('add-user', token => {
 		online[token] = socket;
-		console.log(`New User: ${usercount} - ${token}`);
-		usercount++;
+		console.log(`New User: ${token}`);
 	});
 	socket.on('send-message', data => {
 		console.log(`New Message: ${data.message} from ${data.token} to ${data.to}`);
-		if (online[data.to]) {
-			console.log(`message to ${data.to}`);
+		if (online[data.to])
 			online[data.to].emit('message-event', {
 				'from': data.token,
 				'message': data.message,
 			});
-		}
 	});
 });
 
@@ -54,7 +48,6 @@ app.post('/users', async (req, res) => {
 		res.status(500).send();
 	}
 })
-  
 
 app.post('/users/login', async (req, res) => {
 	const user = users.find(user => user.name === req.body.name);
@@ -64,7 +57,7 @@ app.post('/users/login', async (req, res) => {
 		});
 	}
 	try {
-		if(await bcrypt.compare(req.body.password, user.password)) {
+		if (await bcrypt.compare(req.body.password, user.password)) {
 			res.send({
 				'msg': 'Success',
 				'token': user.name
@@ -76,6 +69,6 @@ app.post('/users/login', async (req, res) => {
 			});
 		}
 	} catch {
-		res.status(500).send()
+		res.status(500).send();
 	}
 })
