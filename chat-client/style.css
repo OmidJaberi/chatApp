@@ -7,14 +7,28 @@ body {
   background: #142233;
 }
 .cover {
-  display: none;
-
   background: #142233;
   position: fixed;
   width: 100vw;
   height: 100vh;
   z-index: 1000;
 }
+
+.signuplink {
+  position: fixed;
+  bottom: 5rem;
+  width: 100vw;
+  text-align: center;
+  color: white;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.signup {
+  z-index: 1100;
+  display: none;
+}
+
 .login {
   position: fixed;
   top: 30vh;
@@ -40,10 +54,12 @@ body {
   border: 0;
   background: lightblue;
 }
+
 .message-container {
   display: flex;
   flex-direction: column;
   background: #142233;
+  color: white;
   width: 90vw;
   min-height: 83vh;
   padding: 5vw;
@@ -70,14 +86,14 @@ body {
   border-radius: 2vh;
   border-top-right-radius: 0;
 }
-form {
+.send-container {
   background: #233343;
   position: fixed;
   bottom: 0;
   width: 100vw;
   height: 10vh;
 }
-form input {
+.send-container input {
   background: #233343;
   color: white;
   width: 80%;
@@ -86,7 +102,7 @@ form input {
   padding-left: 4vw;
   border: 0;
 }
-form button {
+.send-container button {
   color: lightblue;
   font-size: 4vw;
   font-weight: bold;
@@ -97,7 +113,7 @@ form button {
   border-radius: 8vh;
   background: #4B7298;
 }
-form button:hover {
+.send-container button:hover {
   color: white;
   font-weight: bolder;
 }

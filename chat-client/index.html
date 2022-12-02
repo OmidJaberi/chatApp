@@ -9,15 +9,23 @@
   <body>
     <div id="app">
       
+      <div class="cover signup" id="signupcover">
+        <form class="login" id="signup-container">
+          <input type="text" placeholder="User Name" id="new-user">
+          <input type="password" placeholder="Password" id="new-pass">
+          <button id="signupButton">Sign Up</button>
+        </form>
+      </div>
       <div class="cover" id="cover">
-        <div class="login">
-          <input type="text" placeholder="User Name">
-          <input type="password" placeholder="Password">
+        <form class="login" id="login-container">
+          <input type="text" placeholder="User Name" id="user">
+          <input type="password" placeholder="Password" id="pass">
           <button id="loginButton">Enter</button>
-        </div>
+        </form>
+        <a class="signuplink" id="showSignup">Sign Up</a>
       </div>
       <div class="message-container" id="message-container"></div>
-      <form id="send-container">
+      <form class="send-container" id="send-container">
         <input type="text" placeholder="Write a message..." id="message-input">
         <button>➤</button>
       </form>
