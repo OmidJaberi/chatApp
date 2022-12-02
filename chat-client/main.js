@@ -2,8 +2,10 @@ import './style.css';
 
 let socket;
 let token;
+let partner;
 const username = document.getElementById('user');
 const password = document.getElementById('pass');
+const partnerInput = document.getElementById('partner');
 const newUsername = document.getElementById('new-user');
 const newPassword = document.getElementById('new-pass');
 const signupContainer = document.getElementById('signup-container');
@@ -13,6 +15,8 @@ const newMessage = document.getElementById('message-input');
 const messageContainer = document.getElementById('message-container');
 
 function addMessage(message, sender) {
+  if (sender != token && sender != partner)
+    return;
   const tag = `${sender != token ?  sender + ':' : ''} <div>
     <div class="message${sender == token ? ' me' : ''}">${message}</div>
   </div>`;
@@ -47,6 +51,7 @@ signupContainer.onsubmit = async e => {
 
 loginContainer.onsubmit = async e => {
   e.preventDefault();
+  partner = partnerInput.value;
   fetch('http://localhost:3000/users/login', {
     method: 'POST',
     headers: {
@@ -82,7 +87,8 @@ senderContainer.onsubmit = e => {
     addMessage(message, token);
     socket.emit('send-message', {
       'token': token,
-      'message': message
+      'message': message,
+      'to': partner
     });
   }
   newMessage.value = '';

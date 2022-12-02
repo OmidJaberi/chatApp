@@ -17,18 +17,20 @@ const online = {};
 
 
 io.on('connection', socket => {
-	//socket.emit('message-event', 'Hello There!');
 	socket.on('add-user', token => {
-		online[this] = token;
+		online[token] = socket;
 		console.log(`New User: ${usercount} - ${token}`);
 		usercount++;
 	});
 	socket.on('send-message', data => {
-		console.log(`New Message: ${data.message} from ${data.token}`);
-		socket.broadcast.emit('message-event', {
-			'from': data.token,
-			'message': data.message
-		});
+		console.log(`New Message: ${data.message} from ${data.token} to ${data.to}`);
+		if (online[data.to]) {
+			console.log(`message to ${data.to}`);
+			online[data.to].emit('message-event', {
+				'from': data.token,
+				'message': data.message,
+			});
+		}
 	});
 });
 
